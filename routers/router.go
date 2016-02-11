@@ -1,7 +1,7 @@
 package routers
 
 import (
-	"coedit/controllers"
+	"github.com/eraserxp/coedit/controllers"
 	"github.com/astaxie/beego"
 )
 
