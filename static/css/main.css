@@ -1,4 +1,23 @@
-#user_input {
-    width: 800px;
+
+.area {
+    width: 1200px;
+    margin-left: 100px;
+}
+
+.func {
+    width: 200px;
     height: 400px;
+    margin-left:900px;
+    margin-top: -400px;
+    border: 1px solid black;
+}
+
+.col {
+    border: 5px solid blue;
+}
+
+#mode {
+    width: 100px;
+    margin-left: 50px;
+    margin-top: 30px;
 }
