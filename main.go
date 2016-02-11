@@ -7,7 +7,7 @@ import (
 
 func main() {
 	//serve static files
-	beego.StaticDir["/static"] = "static"
+	beego.BConfig.WebConfig.StaticDir["/static"] = "static"
 	beego.Run()
 }
 
