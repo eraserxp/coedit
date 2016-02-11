@@ -1,7 +1,7 @@
 package main
 
 import (
-	_ "coedit/routers"
+	_ "github.com/eraserxp/coedit/routers"
 	"github.com/astaxie/beego"
 )
 
