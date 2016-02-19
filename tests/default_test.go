@@ -6,10 +6,10 @@ import (
 	"testing"
 	"runtime"
 	"path/filepath"
-	_ "coedit/routers"
 
 	"github.com/astaxie/beego"
 	. "github.com/smartystreets/goconvey/convey"
+	"fmt"
 )
 
 func init() {
@@ -24,6 +24,8 @@ func TestMain(t *testing.T) {
 	r, _ := http.NewRequest("GET", "/", nil)
 	w := httptest.NewRecorder()
 	beego.BeeApp.Handlers.ServeHTTP(w, r)
+
+	fmt.Println("Do the test in TestMain")
 
 	beego.Trace("testing", "TestMain", "Code[%d]\n%s", w.Code, w.Body.String())
 
