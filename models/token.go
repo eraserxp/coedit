@@ -15,7 +15,6 @@ type Token struct {
 
 
 func (token *Token) Save() error {
-	fmt.Println("inside token save")
 	if _, err := o.Insert(token); err != nil {
 		if err.Error() != "no LastInsertId available" {
 			fmt.Printf("ERR: %v\n", err)

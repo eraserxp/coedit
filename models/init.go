@@ -21,6 +21,7 @@ func init() {
 	orm.RegisterModel(new(Token))
 	orm.RegisterModel(new(Ownership))
 	orm.RegisterModel(new(Documents))
+	orm.RegisterModel(new(Expire))
 
 
 	//set up the database
@@ -28,8 +29,8 @@ func init() {
 	name := "default"
 
 	// Drop table and re-create.
-	force := false
-//	force := true
+//	force := false
+	force := true
 
 	// Print log.
 	verbose := true
