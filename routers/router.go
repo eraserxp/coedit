@@ -6,6 +6,6 @@ import (
 )
 
 func init() {
-	beego.Router("/doc", &controllers.DocController{})
+	beego.Router("/doc/?:uuid", &controllers.DocController{})
     beego.Router("/", &controllers.MainController{})
 }

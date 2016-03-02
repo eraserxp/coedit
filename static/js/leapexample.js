@@ -67,7 +67,10 @@ window.onload = function() {
 
 	client.on("connect", function() {
 		//client.join_document("anon", "", "example_doc");
-		client.join_document("example_doc");
+		//console.log(window.location.href)
+		var array = window.location.href.split("/")
+		var document_id = array[array.length-1]
+		client.join_document(document_id);
 		console.log("connect to the websocket");
 	});
 
