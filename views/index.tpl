@@ -3,38 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <title>Collaborative editing platform</title>
-	<link href="static/css/main.css" type="text/css" rel="stylesheet"></link>
-    <style type="text/css" media="screen">
-        #editor {
-            position: relative;
-            width: 800px;
-            height: 400px;
-            margin-top: 100px;
-            border: 1px solid black;
-        }
-    </style>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 </head>
 <body>
 
-<div class="area">
-    <div id="editor"></div>
-
-    <div id="misc" class="func">
-        <select id="mode" onchange="changeLan()">
-            <option>javascript</option>
-            <option>xml</option>
-            <option>python</option>
-            <option>java</option>
-            <option>c</option>
-        </select>
-    </div>
+<div class="text-center">
+    <a href="/doc">
+    <button type="button" class="btn btn-primary">New document</button>
+    </a>
 </div>
-
-
-<script src="http://cdn.jsdelivr.net/ace/1.1.8/min/ace.js" type="text/javascript"
-        charset="utf-8"></script>
-<script type="text/javascript" src="static/js/leaps.js"></script>
-<script type="text/javascript" src="static/js/leapexample.js"></script>
 
 
 </body>
