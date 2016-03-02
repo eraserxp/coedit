@@ -42,12 +42,21 @@ var hash = function(str) {
 	return hash;
 };
 
+function changeLan() {
+	var e = document.getElementById('mode');
+	var lang = e.options[e.selectedIndex].text;
+	ace_editor.getSession().setMode( "ace/mode/" + lang);
+}
+
+
 window.onload = function() {
 	"use strict";
 
 	ace_editor = ace.edit("editor");
-	ace_editor.setTheme("ace/theme/monokai");
+	ace_editor.setTheme("ace/theme/tomorrow");
 	ace_editor.getSession().setMode("ace/mode/javascript");
+
+	ace_editor.resize();
 
 	var client = new leap_client();
 	client.bind_ace_editor(ace_editor);
@@ -57,7 +66,9 @@ window.onload = function() {
 	});
 
 	client.on("connect", function() {
-		client.join_document("anon", "", "test_document");
+		//client.join_document("anon", "", "example_doc");
+		client.join_document("example_doc");
+		console.log("connect to the websocket");
 	});
 
 	client.ACE_set_cursor_handler(function(user_id, session_id, lineHeight, top, left) {
@@ -72,7 +83,7 @@ window.onload = function() {
 		var hue = ( id_hash % 10000 ) / 10000;
 		var rgb = HSVtoRGB(hue, 1, 0.8);
 
-		var colorStyle = "rgba(" + rgb.r + ", " + rgb.g + ", " + rgb.b + ", 1)";
+		var colorStyle = "rgba(" + rgb.r + ", " + rgb.g + ", " + rgb.b + ", 0.5)";
 
 		var positionStyle = "";
 		var nameBar = "";
@@ -93,5 +104,7 @@ window.onload = function() {
 		return markerLine + nameBar;
 	});
 
-	client.connect("ws://" + window.location.host + "/socket");
+	client.connect("ws://" + window.location.host.split(":")[0] + ":8001" + "/socket");
+	//client.connect("ws://" + window.location.host + "/leaps/socket");
+
 };
