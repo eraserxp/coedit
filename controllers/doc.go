@@ -21,6 +21,8 @@ func (c *DocController) Get() {
 			fmt.Println("Failed to create a new document!")
 		}
 		document_id = document.Id
+		//set the expire time for the document
+		setExpiredTime(document_id)
 		c.Redirect("/doc/" + document_id, 302)
 	}
 

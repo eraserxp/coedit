@@ -14,7 +14,6 @@ type Documents struct {
 
 
 func (doc *Documents) Save() error {
-	fmt.Println("inside token save")
 	if _, err := o.Insert(doc); err != nil {
 		if err.Error() != "no LastInsertId available" {
 			fmt.Printf("ERR: %v\n", err)
