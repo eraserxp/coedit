@@ -42,21 +42,8 @@ var hash = function(str) {
 	return hash;
 };
 
-function changeLan() {
-	var e = document.getElementById('mode');
-	var lang = e.options[e.selectedIndex].text;
-	ace_editor.getSession().setMode( "ace/mode/" + lang);
-}
-
 
 window.onload = function() {
-	"use strict";
-
-	ace_editor = ace.edit("editor");
-	ace_editor.setTheme("ace/theme/tomorrow");
-	ace_editor.getSession().setMode("ace/mode/javascript");
-
-	ace_editor.resize();
 
 	var client = new leap_client();
 	client.bind_ace_editor(ace_editor);
