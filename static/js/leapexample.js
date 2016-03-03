@@ -74,11 +74,11 @@ window.onload = function() {
 		console.log("connect to the websocket");
 	});
 
-	client.ACE_set_cursor_handler(function(user_id, session_id, lineHeight, top, left) {
+	client.ACE_set_cursor_handler(function(user_id, lineHeight, top, left) {
 		var height = 40;
 		var width = 3;
 
-		var id_hash = hash(session_id);
+		var id_hash = hash(user_id);
 		if ( id_hash < 0 ) {
 			id_hash = id_hash * -1;
 		}
