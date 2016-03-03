@@ -105,7 +105,6 @@
     </div>
 
 <script src="http://cdn.jsdelivr.net/ace/1.1.8/min/ace.js" type="text/javascript" charset="utf-8"></script>
-<script src="../static/js/aceedit.js" type="text/javascript"></script>
 <script type="text/javascript" src="../static/js/leaps.js"></script>
 <script type="text/javascript" src="../static/js/leapexample.js"></script>
 

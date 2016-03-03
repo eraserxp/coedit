@@ -42,8 +42,30 @@ var hash = function(str) {
 	return hash;
 };
 
+"use strict";
+
+
+var editor = ace.edit("editor");
+editor.setTheme("ace/theme/twilight");
+editor.getSession().setMode("ace/mode/javascript");
+
+editor.resize();
+
+function changeLan() {
+	var e = document.getElementById('mode');
+	var lang = e.options[e.selectedIndex].value;
+	editor.getSession().setMode( "ace/mode/" + lang);
+}
+
+function changeTheme() {
+	var e = document.getElementById('theme');
+	var theme = e.options[e.selectedIndex].value;
+	editor.setTheme( "ace/theme/" + theme);
+}
+
 
 window.onload = function() {
+
 
 	var client = new leap_client();
 	client.bind_ace_editor(ace_editor);
