@@ -83,8 +83,8 @@
             </div>
             <div class="selectcolumn">
                 Theme: <select id="theme" onchange="changeTheme()">
-                <option value="twilight">Twilight</option>
                 <option value="tomorrow">Tomorrow</option>
+                <option value="twilight">Twilight</option>
                 <option value="chrome">Chrome</option>
             </select>
             </div>
@@ -104,7 +104,7 @@
         <textarea class="sendtext"></textarea>
     </div>
 
-<script src="http://cdn.jsdelivr.net/ace/1.1.8/min/ace.js" type="text/javascript" charset="utf-8"></script>
+<script src="static/ace/ace.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript" src="../static/js/leaps.js"></script>
 <script type="text/javascript" src="../static/js/leapexample.js"></script>
 
