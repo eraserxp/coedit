@@ -107,10 +107,12 @@ leap_model.prototype._validate_updates = function(user_updates) {
 				return "update contained NaN value for position: " + JSON.stringify(update);
 			}
 		}
-		if ( undefined !== update.message &&
-		    "string" !== typeof(update.message) ) {
-			return "update contained invalid type for message: " + JSON.stringify(update);
-		}
+		//the following causes error in mac, comment it out
+		//console.log("Type of update message: " + typeof(update.message) );
+		//if ( undefined !== update.message &&
+		//    "string" !== typeof(update.message) ) {
+		//	return "update contained invalid type for message: " + JSON.stringify(update);
+		//}
 		if ( undefined !== update.active &&
 		    "boolean" !== typeof(update.active) ) {
 			if ("string" !== typeof(update.active)) {
@@ -118,10 +120,11 @@ leap_model.prototype._validate_updates = function(user_updates) {
 			}
 			update.active = ("true" === update.active);
 		}
-		if ( undefined === update.user_id ||
-		    "string" !== typeof(update.user_id) ) {
-			return "update contained invalid type for user_id: " + JSON.stringify(update);
-		}
+		//the following causes error in mac, comment it out
+		//if ( undefined === update.user_id ||
+		//    "string" !== typeof(update.user_id) ) {
+		//	return "update contained invalid type for user_id: " + JSON.stringify(update);
+		//}
 	}
 };
 
@@ -435,6 +438,7 @@ leap_client.prototype._process_message = function(message) {
 		   !(message.user_updates instanceof Array) ) {
 			return "message update type contained invalid user_updates";
 		}
+		//console.log("The received message is: " + JSON.stringify(message, null, 2));
 		validate_error = this._model._validate_updates(message.user_updates);
 		if ( validate_error !== undefined ) {
 			return "received updatess with error: " + validate_error;
