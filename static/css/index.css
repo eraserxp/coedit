@@ -33,9 +33,9 @@ html, body {
 }
 
 .iconright {
-    padding-top:10px;
-    padding-right: 10px;
     float: right;
+    padding-top: 10px;
+    padding-right: 10px;
 }
 
 
@@ -127,4 +127,9 @@ html, body {
 .files {
     width: 95%;
     height: 80%;
+}
+
+.iconimage {
+    width: 50px;
+    height: 50px;
 }
