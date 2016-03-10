@@ -7,11 +7,17 @@ import (
 )
 
 
+
 func main() {
+
+
 	//serve static files
 	beego.BConfig.WebConfig.StaticDir["/doc/static"] = "static"
 	fmt.Println("write into database")
 
 	beego.Run()
 }
+
+
+
 

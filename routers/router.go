@@ -6,6 +6,8 @@ import (
 )
 
 func init() {
+	beego.Handler("/auth/:provider", &controllers.AuthHandler{})
+	beego.Handler("/auth/:provider/callback", &controllers.AuthCallbackHandler{})
 	beego.Router("/doc/?:uuid", &controllers.DocController{})
-    beego.Router("/", &controllers.MainController{})
+	beego.Router("/", &controllers.MainController{})
 }
