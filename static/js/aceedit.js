@@ -1,5 +1,5 @@
 /**
- * Created by jiyu on 11/02/16.
+ * Created by jiyu on 11/02/1
  */
 "use strict";
 
@@ -20,6 +20,16 @@ function changeTheme() {
     var e = document.getElementById('theme');
     var theme = e.options[e.selectedIndex].value;
     editor.setTheme( "ace/theme/" + theme);
+}
+
+function createNewFile() {
+    var pro = prompt("Please enter the name for the file", "example: code.js");
+
+    if ( pro != null ) {
+        var opt = document.createElement('option');
+        opt.innerHTML = pro;
+        document.getElementById("filelist").appendChild( opt);
+    }
 }
 
 /*document.getElementById('mode').addEventListener('change',

@@ -6,7 +6,7 @@ import (
 	"strings"
 	"github.com/markbates/goth/gothic"
 	"net/http"
-	"html/template"
+	//"html/template"
 	"github.com/gorilla/sessions"
 	"github.com/markbates/goth/providers/bitbucket"
 	"github.com/markbates/goth/providers/digitalocean"
@@ -27,6 +27,8 @@ import (
 	"github.com/markbates/goth/providers/onedrive"
 	"github.com/markbates/goth"
 	"net/url"
+	"github.com/eraserxp/coedit/models"
+	"github.com/astaxie/beego"
 )
 
 func init()  {
@@ -104,14 +106,22 @@ func authCallback(res http.ResponseWriter, req *http.Request) {
 	// print our state string to the console. Ideally, you should verify
 	// that it's the same string as the one you set in `setState`
 	fmt.Println("State: ", gothic.GetState(req))
+	fmt.Println( "request method: " + req.Method)
 
 	user, err := gothic.CompleteUserAuth(res, req)
 	if err != nil {
 		fmt.Fprintln(res, err)
 		return
 	}
-	t, _ := template.New("foo").Parse(userTemplate)
-	t.Execute(res, user)
+
+	//t, _ := template.New("foo").Parse(userTemplate)
+
+	account := &models.Account{ user.Email, ""}
+	fmt.Println( account.CheckExist( ) )
+
+
+	http.Redirect( res, req, "/user/" + user.Email, http.StatusFound)
+	//t.Execute(res, user)
 }
 
 func auth(res http.ResponseWriter, req *http.Request)  {
@@ -128,3 +138,21 @@ var userTemplate = `
 <p>UserID: {{.UserID}}</p>
 <p>AccessToken: {{.AccessToken}}</p>
 `
+type AccountController struct {
+	beego.Controller
+}
+
+func (a *AccountController) Get() {
+
+	user_email := a.Ctx.Input.Param(":uemail")
+
+	fmt.Println("AccountController for " + user_email)
+	a.Data["Email"] = user_email
+
+	account := &models.Account{ user_email, ""}
+	a.Data["Options"] = account.SearchDocument()
+
+	//	c.Data["Website"] = "beego.me"
+	//	c.Data["Email"] = "astaxie@gmail.com"
+	a.TplName = "user.tpl"
+}
