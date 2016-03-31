@@ -31,7 +31,7 @@
 
     <div class="filelist">
         <Select id="filelist" class="files" size="2" name="files">
-            {{ .Options }}
+            <a href="url">link text</a>{{ .Options }}
         </Select>
 
         <button onclick="createNewFile()">Create New</button>

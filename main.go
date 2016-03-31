@@ -27,6 +27,8 @@ func main() {
 	beego.BConfig.WebConfig.StaticDir["/doc/static"] = "static"
 	fmt.Println("write into database")
 
+	//set session
+
 	beego.Run()
 }
 
