@@ -116,7 +116,7 @@ window.onload = function() {
 		return markerLine + nameBar;
 	});
 
-	client.connect("ws://" + window.location.host.split(":")[0] + ":8000");
+	client.connect("ws://" + window.location.host.split(":")[0] + ":8001");
 	//client.connect("ws://" + window.location.host + "/leaps/socket");
 
 };
