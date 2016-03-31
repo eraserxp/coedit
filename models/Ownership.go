@@ -8,7 +8,7 @@ import (
 
 type Ownership struct {
 	Id int
-	Username string `orm:"size(20);unique"`
+	Username string `orm:"size(40)"`
 	DocumentId string `orm:"size(36);unique"`
 }
 
