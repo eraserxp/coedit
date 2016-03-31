@@ -29,7 +29,11 @@ import (
 	"net/url"
 	"github.com/eraserxp/coedit/models"
 	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/session"
 )
+
+var globalSessions *session.Manager
+
 
 func init()  {
 	gothic.Store = sessions.NewFilesystemStore(os.TempDir(), []byte("goth-example"))
@@ -58,6 +62,9 @@ func init()  {
 
 	)
 
+	//set a global session
+	globalSessions, _ = session.NewManager("memory", `{"cookieName":"gosessionid", "enableSetCookie,omitempty": true, "gclifetime":3600, "maxLifetime": 3600, "secure": false, "sessionIDHashFunc": "sha1", "sessionIDHashKey": "", "cookieLifeTime": 3600, "providerConfig": ""}`)
+	go globalSessions.GC()
 }
 
 //I need to add query variable to make goth works with beego
@@ -119,6 +126,16 @@ func authCallback(res http.ResponseWriter, req *http.Request) {
 	account := &models.Account{ user.Email, ""}
 	fmt.Println( account.CheckExist( ) )
 
+	//if everything is fine, set the session for the current user
+	sess, err := globalSessions.SessionStart(res, req)
+	if err != nil {
+		fmt.Println("set error,", err)
+	}
+	defer sess.SessionRelease(res)
+	err = sess.Set("username", user.Email)
+	if err != nil {
+		fmt.Println("set error,", err)
+	}
 
 	http.Redirect( res, req, "/user/" + user.Email, http.StatusFound)
 	//t.Execute(res, user)
@@ -142,7 +159,32 @@ type AccountController struct {
 	beego.Controller
 }
 
+type FileList struct{
+	Name string
+	Url  string
+}
+
+//check whether the current user has logged in or not
+func isLogin(this *AccountController) bool {
+	//try to retrieve the session
+	w := this.Ctx.ResponseWriter
+	r := this.Ctx.Request
+	sess, err := globalSessions.SessionStart(w, r)
+	if (err != nil) {
+		return false
+	}
+	username := sess.Get("username")
+	fmt.Println("get username from session: " + username.(string))
+	user := this.Ctx.Input.Param(":uemail")
+
+	return username == user
+}
+
 func (a *AccountController) Get() {
+	//if not logged in, redirect to the main page
+	if (!isLogin(a)) {
+		a.Redirect("/", 302)
+	}
 
 	user_email := a.Ctx.Input.Param(":uemail")
 
@@ -151,6 +193,7 @@ func (a *AccountController) Get() {
 
 	account := &models.Account{ user_email, ""}
 	a.Data["Options"] = account.SearchDocument()
+
 
 	//	c.Data["Website"] = "beego.me"
 	//	c.Data["Email"] = "astaxie@gmail.com"
