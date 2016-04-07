@@ -1,5 +1,5 @@
 // Package websocketproxy is a reverse proxy for WebSocket connections.
-package websocketproxy
+package controllers
 
 import (
 	"io"
@@ -10,6 +10,7 @@ import (
 	"strings"
 
 	"github.com/gorilla/websocket"
+	"fmt"
 )
 
 var (
@@ -68,6 +69,20 @@ func NewProxy(target *url.URL) *WebsocketProxy {
 
 // ServeHTTP implements the http.Handler that proxies WebSocket connections.
 func (w *WebsocketProxy) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
+	//TODO: check whether the current user has the rights to access the document
+
+	//retrieve document id from the request
+	sess, _ := globalSessions.SessionStart(rw, req)
+	//fmt.Println("url when connecting to websocket: " + req.URL.Path)
+	//fmt.Println("websocket headers: ", req.Header)
+	documentId := sess.Get("documentId")
+	fmt.Println("document id: ", documentId)
+	//check if the document can be accessed by everyone
+
+	//if only certain users can access the document, retrieve the current user from
+	//the request and check if it is within the list
+
+
 	if w.Backend == nil {
 		log.Println("websocketproxy: backend function is not defined")
 		http.Error(rw, "internal server error (code: 1)", http.StatusInternalServerError)

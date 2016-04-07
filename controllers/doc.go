@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"encoding/json"
 	"io"
+	_ "reflect"
 )
 
 type DocController struct {
@@ -52,9 +53,16 @@ func (c *RegDocController) Get() {
 
 		sess, _ := globalSessions.SessionStart( c.Ctx.ResponseWriter, c.Ctx.Request)
 		username := sess.Get("username")
-		c.Data["Email"] =  username.(string)
+		//save document id to sessions
+		sess.Set("documentId", document_id)
 
-		c.TplName = "regdoc.tpl"
+		if (username != nil) {
+			c.Data["Email"] =  username.(string)
+			c.TplName = "regdoc.tpl"
+		} else {
+			c.TplName = "doc.tpl"
+		}
+
 	}
 }
 

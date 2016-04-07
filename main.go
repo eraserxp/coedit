@@ -6,13 +6,13 @@ import (
 	"github.com/astaxie/beego"
 	"net/http"
 	"net/url"
-	"github.com/eraserxp/coedit/websocketproxy"
+	"github.com/eraserxp/coedit/controllers"
 	"log"
 )
 
 func startWebsocketProxy() error {
 	u, _ := url.Parse("ws://localhost:8001")
-	err := http.ListenAndServe(":8000", websocketproxy.NewProxy(u))
+	err := http.ListenAndServe(":8000", controllers.NewProxy(u))
 	if err != nil {
 		log.Fatalln(err)
 		return err
