@@ -50,7 +50,6 @@
         <a href="/doc">
             <button class="create">Create New Document</button>
         </a>
-        <div class="register">Click to register a new account</div>
     </div>
 </div>
 </body>

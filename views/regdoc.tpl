@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Collaborative editing platform</title>
     <link rel="stylesheet" href="../static/css/index.css" />
     <link rel="stylesheet" href="../static/bootstrap/css/bootstrap.css" />
     <link rel="stylesheet" href="../static/css/bootstrap-social.css" />
@@ -17,6 +16,8 @@
             border: 1px solid black;
         }
     </style>
+
+    <script src="../static/js/logcontrol.js" type="text/javascript" ></script>
 </head>
 <body>
 <div class="header">
@@ -24,21 +25,10 @@
         COEDITOR
     </div>
     <div class="iconright">
-        <a class="btn btn-lg btn-social-icon btn-google">
-            <span class="fa fa-google"></span>
-        </a>
-
-        <a class="btn btn-lg btn-social-icon btn-facebook">
-            <span class="fa fa-facebook"></span>
-        </a>
-
-        <a class="btn btn-lg btn-social-icon btn-github">
-            <span class="fa fa-github"></span>
-        </a>
-
-        <a class="btn btn-lg btn-social-icon btn-dropbox">
-            <span class="fa fa-dropbox"></span>
-        </a>
+        <div class="profileinfo">
+            Welcome, {{.Email}}
+        </div>
+        <div class="iconright"> <button onclick="logout()">Logout</button></div>
     </div>
 </div>
 <div class="body">
@@ -80,9 +70,9 @@
         <textarea class="sendtext"></textarea>
     </div>
 
-<script src="../static/ace/ace.js" type="text/javascript" charset="utf-8"></script>
-<script type="text/javascript" src="../static/js/leaps.js"></script>
-<script type="text/javascript" src="../static/js/leapexample.js"></script>
+    <script src="../static/ace/ace.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" src="../static/js/leaps.js"></script>
+    <script type="text/javascript" src="../static/js/leapexample.js"></script>
 
 </body>
 </html>

@@ -3,6 +3,7 @@ package controllers
 import (
 	"fmt"
 	"os"
+	"io"
 	"strings"
 	"github.com/markbates/goth/gothic"
 	"net/http"
@@ -198,4 +199,40 @@ func (a *AccountController) Get() {
 	//	c.Data["Website"] = "beego.me"
 	//	c.Data["Email"] = "astaxie@gmail.com"
 	a.TplName = "user.tpl"
+}
+
+type RequestUserListHandler struct {
+
+}
+
+func (this *RequestUserListHandler) ServeHTTP(res http.ResponseWriter, req *http.Request)  {
+	RequestUserList(res, req)
+}
+
+func RequestUserList(res http.ResponseWriter, req *http.Request) {
+	switch req.Method {
+		case "GET":
+			sess, _ := globalSessions.SessionStart(res, req)
+			username := sess.Get("username")
+			account := &models.Account{ username.(string), ""}
+
+			jsonlist := account.SearchDocument()
+			fmt.Println(jsonlist)
+			io.WriteString(res, jsonlist)
+
+		default:
+
+	}
+}
+
+type LogoutHandler struct {
+
+}
+
+func (this *LogoutHandler) ServeHTTP(res http.ResponseWriter, req *http.Request)  {
+	Logout(res, req)
+}
+
+func Logout (res http.ResponseWriter, req *http.Request) {
+	globalSessions.SessionDestroy( res, req)
 }

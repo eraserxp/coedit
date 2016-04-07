@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>New Document</title>
+    <title>{{.Email}}'s main page</title>
     <link rel="stylesheet" href="../static/css/index.css" />
     <style type="text/css" media="screen">
         #editor {
@@ -13,7 +13,9 @@
             border: 1px solid black;
         }
     </style>
-    <script src="../static/js/main.js" type="text/javascript"></script>
+    <script scr="https://code.jquery.com/jquery-2.2.3.min.js" type="text/javascript"></script>
+    <script src="../static/js/RegisteredUser.js" type="text/javascript" ></script>
+    <script src="../static/js/logcontrol.js" type="text/javascript" ></script>
 </head>
 <body>
 <div class="header">
@@ -24,69 +26,23 @@
         <div class="profileinfo">
             Welcome, {{.Email}}
         </div>
-        <div class="iconright"> <button>Logout</button></div>
+        <div class="iconright"> <button onclick="logout()">Logout</button></div>
     </div>
 </div>
 <div class="body">
 
     <div class="filelist">
-        <Select id="filelist" class="files" size="2" name="files">
-            <a href="url">link text</a>{{ .Options }}
+        <Select id="filelist" class="files" size="2" name="files" ondblclick="openSelectedDoc()">
+
         </Select>
 
         <button onclick="createNewFile()">Create New</button>
     </div>
 
-    <div class="reginfo">
-
-        <div class="editor">
-            <div id="editor">function foo(items) {
-                var x = "All this is syntax highlighted";
-                return x;}
-            </div>
-        </div>
-
-
-        <div class="funccolumn">
-            <div class="selectcolumn">
-                Language: <select id="mode" onchange="changeLan()">
-                <option value="javascript">JavaScript</option>
-                <option value="xml">XML</option>
-                <option value="python">Python</option>
-                <option value="csharp">C#</option>
-            </select>
-            </div>
-            <div class="selectcolumn">
-                Theme: <select id="theme" onchange="changeTheme()">
-                <option value="twilight">Twilight</option>
-                <option value="tomorrow">Tomorrow</option>
-                <option value="chrome">Chrome</option>
-            </select>
-            </div>
-            <div class="selectcolumn">
-
-            </div>
-        </div>
-    </div>
-
-    <div class="chatter">
-        Current users:<br/>
-        <textarea class="usertext" readonly>User1
-User2</textarea>
-        <br/><br/>
-        Message log:<br/>
-        <textarea class="logtext" readonly>Ace: sometext</textarea>
-        <br/><br/>
-        Send message: <br/>
-        <textarea class="sendtext"></textarea>
-    </div>
-
-
 </div>
 
 <script src="http://d1n0x3qji82z53.cloudfront.net/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
-<script src="../static/js/aceedit.js" type="text/javascript">
-</script>
+<script src="../static/js/aceedit.js" type="text/javascript"></script>
 
 </body>
 </html>
