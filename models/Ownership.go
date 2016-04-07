@@ -5,6 +5,7 @@ import (
 	_ "github.com/astaxie/beego/orm"
 	_ "github.com/lib/pq" // import postgres driver
 	"fmt"
+	"github.com/astaxie/beego/orm"
 )
 
 type Ownership struct {
@@ -22,4 +23,38 @@ func (ownership *Ownership) Save() error {
 		}
 	}
 	return nil
+}
+
+func (ownership *Ownership) SaveExceptID() error {
+	p, _ := o.Raw("insert into ownership(username, filename, document_id) values (?, ?, ?)").Prepare()
+
+	if _, rerr := p.Exec( ownership.Username, ownership.Filename, ownership.DocumentId ); rerr != nil {
+		if rerr.Error() != "no LastInsertId available" {
+			fmt.Printf("ERR: %v\n", rerr)
+			return rerr
+		}
+	}
+
+	p.Close()
+	return nil
+}
+
+func (ownership *Ownership) SearchID() string {
+
+	var lists []orm.ParamsList
+
+	num, err := o.Raw(" select document_id from ownership where username = ? and filename = ?", ownership.Username, ownership.Filename).ValuesList( &lists)
+
+	if err == nil {
+		if num == 1 {
+			return lists[0][0].(string)
+
+		} else {
+			fmt.Println("No result found or result number is not correct !")
+		}
+	} else {
+		fmt.Println( "Error on select ownership query! %v" , err)
+	}
+
+	return ""
 }

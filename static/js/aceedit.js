@@ -22,17 +22,7 @@ function changeTheme() {
     editor.setTheme( "ace/theme/" + theme);
 }
 
-function createNewFile() {
-    var pro = prompt("Please enter the name for the file", "example: code.js");
-    //Todo: check the uniqueness of the filename
-    if ( pro != null ) {
-        var opt = document.createElement('option');
-        var a = document.createElement('a');
 
-        opt.innerHTML = '<a href=' + '"'+ window.location.host + '/' + pro + '>' + pro + "</a>";
-        document.getElementById("filelist").appendChild( opt);
-    }
-}
 
 /*document.getElementById('mode').addEventListener('change',
     function() {

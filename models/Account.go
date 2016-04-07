@@ -6,6 +6,7 @@ import (
 	_ "github.com/lib/pq" // import postgres driver
 	"fmt"
 	"github.com/astaxie/beego/orm"
+	"encoding/json"
 )
 
 type Account struct {
@@ -33,7 +34,6 @@ func (a *Account) CheckExist() bool {
 		o.Insert(a)
 		return true
 	}
-
 }
 
 
@@ -41,7 +41,7 @@ func (a *Account) SearchDocument() string {
 	var lists []orm.ParamsList
 	result := ""
 
-	num, err := o.Raw("SELECT document_id FROM ownership where username = ?", a.Name).ValuesList( &lists)
+	num, err := o.Raw("SELECT filename FROM ownership where username = ?", a.Name).ValuesList( &lists)
 
 	if err == nil {
 		if num == 0 {
@@ -49,11 +49,14 @@ func (a *Account) SearchDocument() string {
 		} else {
 			fmt.Println( "Found result!" )
 
-			for i := 0; i < int(num); i++ {
+			var docList = make([]string, num)
 
-				//result = result + "<option>" + lists[i][0] + "</option>"
-				fmt.Println(lists[i][0])
+			for i := 0; i < int(num); i++ {
+				docList[i], _ = lists[i][0].(string)
 			}
+
+			r, _ := json.Marshal( docList)
+			result = string(r)
 		}
 
 	} else {
