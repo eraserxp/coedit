@@ -53,6 +53,7 @@ func (c *RegDocController) Get() {
 		sess, _ := globalSessions.SessionStart( c.Ctx.ResponseWriter, c.Ctx.Request)
 		username := sess.Get("username")
 		c.Data["Email"] =  username.(string)
+		c.Data["FileName"] =  ( &models.Ownership{1, username.(string), "default", document_id} ).SearchDocName()
 
 		c.TplName = "regdoc.tpl"
 	}

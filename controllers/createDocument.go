@@ -83,3 +83,43 @@ func UserNewDoc (res http.ResponseWriter, req *http.Request) {
 
 	}
 }
+
+type DeleteDocHandler struct {
+
+}
+
+func (this *DeleteDocHandler) ServeHTTP(res http.ResponseWriter, req *http.Request)  {
+	DeleteDoc(res, req)
+}
+
+type deleteDoc_struct struct {
+	DocumentName string
+}
+
+func DeleteDoc (res http.ResponseWriter, req *http.Request) {
+	switch req.Method {
+	case "POST":
+		sess, _ := globalSessions.SessionStart(res, req)
+
+		UserName := sess.Get("username")
+
+		decoder := json.NewDecoder( req.Body)
+		var doc deleteDoc_struct
+		err := decoder.Decode(&doc)
+		if err != nil {
+			fmt.Println("Decode Error!")
+		}
+		fmt.Println( "Create Document Request from UserName: " + UserName.(string) + "; DocumentName: " + doc.DocumentName)
+
+		os := &models.Ownership{ 1 , UserName.(string), doc.DocumentName, "default"}
+
+		doc_id := os.SearchID();
+
+		doc_instance := &models.Documents{ doc_id, "default"}
+
+		doc_instance.Delete();
+
+	default:
+
+	}
+}
