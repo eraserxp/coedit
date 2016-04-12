@@ -27,6 +27,30 @@ function createNewFile() {
     }
 }
 
+function deleteFile() {
+
+
+
+    var filelist = document.getElementById('filelist');
+
+    var sel = filelist.options[filelist.selectedIndex].value;
+
+    var json_upload = JSON.stringify( {documentname: sel} )
+    var xhr = new XMLHttpRequest();
+
+    xhr.open('post', '/deletedoc');
+
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.onreadystatechange = function() {
+        if ( xhr.readyState == 4 && xhr.status == 200) {
+            getFileList();
+        }
+    }
+    xhr.send(json_upload);
+
+
+}
+
 function getFileList() {
     var xhr = new XMLHttpRequest();
 

@@ -36,7 +36,11 @@
 
         </Select>
 
-        <button onclick="createNewFile()">Create New</button>
+        <div>
+            <button onclick="createNewFile()">Create New File</button>
+            <button onclick="deleteFile()">Delete Selected File</button>
+        </div>
+
     </div>
 
 </div>

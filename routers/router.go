@@ -18,4 +18,5 @@ func init() {
 	beego.Handler("/requestuserlist", &controllers.RequestUserListHandler{})
 	beego.Handler("/opendoc", &controllers.OpenDocReqHandler{})
 	beego.Handler("/logout", &controllers.LogoutHandler{} )
+	beego.Handler("/deletedoc", &controllers.DeleteDocHandler{})
 }
