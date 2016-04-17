@@ -19,4 +19,6 @@ func init() {
 	beego.Handler("/opendoc", &controllers.OpenDocReqHandler{})
 	beego.Handler("/logout", &controllers.LogoutHandler{} )
 	beego.Handler("/deletedoc", &controllers.DeleteDocHandler{})
+	beego.Handler("/loadfileprivacy", &controllers.LoadDocPrivacyHandler{})
+	beego.Handler("/updatedocprivacy", &controllers.SaveDocPrivacyHandler{})
 }
