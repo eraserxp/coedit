@@ -56,7 +56,7 @@
             </select>
             </div>
             <div class="selectcolumn">
-
+                <button onclick="changePrivacy()">Change Privacy Option...</button>
             </div>
         </div>
     </div>
@@ -69,6 +69,19 @@
         <br/><br/>
         Send message: <br/>
         <textarea class="sendtext"></textarea>
+    </div>
+
+    <div id="dialogbg"></div>
+    <div id="newdocdialog" style="display:none">
+        <div> Please give the privacy option of the current file: </div>
+        <div> Who can access this file? : <select id="privacy" onchange="privacyOptionChange()">
+            <option value="E">Everyone can access</option>
+            <option value="S">Some user can access</option>
+            <option value="N">No other user can access</option>
+        </select></div>
+        <div> List for emails that can access this file:</div>
+        <div> <textarea id="accessemails" placeholder="One line for every email."></textarea> </div>
+        <div> <button onclick="handinPrivacy()">Submit</button> <button onclick="handinCancel()">Cancel</button>  </div>
     </div>
 
     <script src="../static/ace/ace.js" type="text/javascript" charset="utf-8"></script>
