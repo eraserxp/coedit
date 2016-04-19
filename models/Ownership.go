@@ -75,7 +75,7 @@ func (ownership *Ownership) SearchDocName() string {
 
 	var lists []orm.ParamsList
 
-	num, err := o.Raw(" select filename from ownership where username = ? and document_id = ?", ownership.Username, ownership.DocumentId).ValuesList( &lists)
+	num, err := o.Raw(" select filename from ownership where document_id = ?", ownership.DocumentId).ValuesList( &lists)
 
 	if err == nil {
 		if num == 1 {

@@ -137,8 +137,7 @@ html, body {
 #newdocdialog {
     position: absolute;
     top: 50%;
-    left: 40%;
-    width: 600px;
+    left: 30%;
     z-index:201;
     background: #FFFFFF;
 }
