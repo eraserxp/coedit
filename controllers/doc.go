@@ -32,10 +32,13 @@ func (c *DocController) Get() {
 	}
 
 	docmodel := &models.Documents{document_id, "", "E", ""};
+	privacyOption := docmodel.CheckPrivacyInfo()
 
-	if( docmodel.CheckPrivacyInfo() != "E" ) {
+	if( privacyOption == "N" ) {
 		c.TplName="404.tpl"
 		return;
+	} else if ( privacyOption == "S") {
+		c.Redirect("/docreg/" + document_id, 302)
 	}
 
 	//	c.Data["Website"] = "beego.me"
@@ -43,12 +46,12 @@ func (c *DocController) Get() {
 	c.TplName = "doc.tpl"
 }
 
-type RegDocController struct {
+type DocRegController struct {
 	beego.Controller
 }
 
-func (c *RegDocController) Get() {
-	fmt.Println("ReqDocController")
+func (c *DocRegController) Get() {
+	fmt.Println("DocRegController")
 
 	document_id := c.Ctx.Input.Param(":uuid")
 
@@ -60,6 +63,71 @@ func (c *RegDocController) Get() {
 
 		sess, _ := globalSessions.SessionStart( c.Ctx.ResponseWriter, c.Ctx.Request)
 		username := sess.Get("username")
+
+
+
+		if( username == nil || username == "") {
+			c.TplName = "404.tpl"
+			fmt.Println( "Unregistered user attempting to load registered page." );
+			return;
+		}
+
+		fmt.Println( username.(string) + " is attempting to read file " + document_id);
+
+		doc := &models.Documents{document_id, "", "E", ""}
+
+		canAccess := doc.CheckAccessible( username.(string) )
+
+
+		c.Data["Email"] =  username.(string)
+
+		if ( !canAccess ) {
+			c.TplName = "404.tpl"
+			fmt.Println(username.(string) + " can not access the page" )
+			return;
+		} else {
+			fmt.Println(username.(string) + " can access the page" )
+		}
+
+
+		filename := ( &models.Ownership{1, username.(string), "default", document_id} ).SearchDocName()
+
+		if( filename == "") {
+			c.TplName = "404.tpl"
+			return;
+		}
+
+		c.Data["FileName"] =  filename
+
+
+
+		c.TplName = "regdoc.tpl"
+	}
+}
+
+type RegDocController struct {
+	beego.Controller
+}
+
+func (c *RegDocController) Get() {
+	fmt.Println("RegDocController")
+
+	document_id := c.Ctx.Input.Param(":uuid")
+
+	if ( document_id == "") {
+
+		c.TplName = "404.tpl"
+
+	} else {
+
+		sess, _ := globalSessions.SessionStart( c.Ctx.ResponseWriter, c.Ctx.Request)
+		username := sess.Get("username")
+
+		if( username == nil || username == "") {
+			c.TplName = "404.tpl"
+			fmt.Println( "Unregistered user attempting to load registered page." );
+			return;
+		}
 
 		c.Data["Email"] =  username.(string)
 		filename := ( &models.Ownership{1, username.(string), "default", document_id} ).SearchDocName()
