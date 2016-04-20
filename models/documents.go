@@ -6,6 +6,7 @@ import (
 	_ "github.com/lib/pq" // import postgres driver
 	"fmt"
 	"github.com/astaxie/beego/orm"
+	"strings"
 )
 
 type Documents struct {
@@ -114,4 +115,22 @@ func (doc *Documents) UpdatePrivacyInfo() error {
 	m.Close()
 
 	return nil;
+}
+
+func (doc *Documents) CheckAccessible(useremail string) bool {
+	var lists []orm.ParamsList
+	num, _ := o.Raw("Select access_emails from documents where id = ?", doc.Id).ValuesList( &lists)
+
+	if num == 1 {
+		param := lists[0][0].(string)
+		emaillist := strings.Split(param, "\n")
+
+		for _,email := range emaillist {
+			if useremail == strings.TrimSpace(email) {
+				return true;
+			}
+		}
+	}
+
+	return false;
 }

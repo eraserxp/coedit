@@ -44,7 +44,7 @@
     </div>
 
     <div id="dialogbg"></div>
-    <div id="newdocdialog" style="display:none">
+    <div id="newdocdialog" style="display:none;width:400px">
         <div> Please give the name for the file: </div>
         <div> <input id="newdocname" placeholder="example: test.js" /> </div>
         <div> <button onclick="createNewFile()">Create</button>  <button onclick="CreateCancel()">Cancel</button></div>
