@@ -5,7 +5,6 @@ import (
 	. "github.com/smartystreets/goconvey/convey"
 	"github.com/eraserxp/coedit/models"
 	"github.com/astaxie/beego/orm"
-	_ "github.com/lib/pq" // import postgres driver
 	"time"
 	"fmt"
 )
@@ -20,6 +19,7 @@ func GetExpiredTime(DocumentId string) string {
 	//fmt.Println( "My expire time: %s" , expireTime)
 	if err == nil {
 		if (num == 1){
+			o.Raw("DELETE FROM expire WHERE document_id = ?", DocumentId).Exec()
 			return lists[0][0].(string)
 		} else {
 			fmt.Println( "Error on select expire query! %v" , err)
@@ -27,7 +27,7 @@ func GetExpiredTime(DocumentId string) string {
 	} else {
 		fmt.Println( "Error on select expire query! %v" , err)
 	}
-
+	o.Raw("DELETE FROM expire WHERE document_id = ?", DocumentId).Exec()
 	return ""
 }
 

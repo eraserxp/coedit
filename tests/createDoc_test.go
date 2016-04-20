@@ -7,9 +7,9 @@ import (
 	"github.com/astaxie/beego/orm"
 	"fmt"
 )
-var o  orm.Ormer = orm.NewOrm()
-func TestCreateDoc(t *testing.T) {
 
+func TestCreateDoc(t *testing.T) {
+	var o  orm.Ormer = orm.NewOrm()
 	docNew := &models.Documents{"testid","test_content","D","test@gmail"}
 	// Only pass t into top-level Convey calls
 	err := docNew.Save()
