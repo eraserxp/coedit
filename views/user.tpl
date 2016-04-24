@@ -36,8 +36,20 @@
 
         </Select>
 
-        <button onclick="createNewFile()">Create New</button>
+        <div>
+            <button onclick="showDocDialog()">Create New File</button>
+            <button onclick="deleteFile()">Delete Selected File</button>
+        </div>
+
     </div>
+
+    <div id="dialogbg"></div>
+    <div id="newdocdialog" style="display:none;width:400px">
+        <div> Please give the name for the file: </div>
+        <div> <input id="newdocname" placeholder="example: test.js" /> </div>
+        <div> <button onclick="createNewFile()">Create</button>  <button onclick="CreateCancel()">Cancel</button></div>
+    </div>
+
 
 </div>
 

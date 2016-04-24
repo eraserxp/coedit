@@ -39,11 +39,43 @@ func (ownership *Ownership) SaveExceptID() error {
 	return nil
 }
 
+func (ownership * Ownership) SearchDupName() bool {
+	var lists []orm.ParamsList
+
+	num, _ := o.Raw(" select document_id from ownership where username = ? and filename = ?", ownership.Username, ownership.Filename).ValuesList( &lists)
+
+	if( num == 0) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
 func (ownership *Ownership) SearchID() string {
 
 	var lists []orm.ParamsList
 
 	num, err := o.Raw(" select document_id from ownership where username = ? and filename = ?", ownership.Username, ownership.Filename).ValuesList( &lists)
+
+	if err == nil {
+		if num == 1 {
+			return lists[0][0].(string)
+
+		} else {
+			fmt.Println("No result found or result number is not correct !")
+		}
+	} else {
+		fmt.Println( "Error on select ownership query! %v" , err)
+	}
+
+	return ""
+}
+
+func (ownership *Ownership) SearchDocName() string {
+
+	var lists []orm.ParamsList
+
+	num, err := o.Raw(" select filename from ownership where document_id = ?", ownership.DocumentId).ValuesList( &lists)
 
 	if err == nil {
 		if num == 1 {

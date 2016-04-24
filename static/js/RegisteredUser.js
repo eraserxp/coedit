@@ -6,25 +6,84 @@
 document.onload = getFileList();
 
 
-function createNewFile() {
-    var pro = prompt("Please enter the name for the file", "example: code.js");
-    //Todo: check the uniqueness of the filename
-    if ( pro != null ) {
+function showDocDialog() {
+    document.getElementById("dialogbg").style.display ="block";
+    document.getElementById("newdocdialog").style.display ="block";
+    document.getElementById("newdocname").value = "";
 
-        var json_upload = JSON.stringify( {documentname: pro})
+    var sWidth, sHeight;
+    sWidth = screen.width;
+    sWidth = document.body.offsetWidth;
+    sHeight = document.body.offsetHeight;
+
+    if( sHeight < screen.height) { sHeight = screen.height;}
+
+    document.getElementById("dialogbg").style.width = sWidth + "px";
+    document.getElementById("dialogbg").style.height = sHeight + "px";
+    document.getElementById("dialogbg").style.display = "block";
+    document.getElementById("dialogbg").style.right = document.getElementById("newdocdialog").offsetLeft + "px";
+
+}
+
+function CreateCancel() {
+    document.getElementById("dialogbg").style.display ="none";
+    document.getElementById("newdocdialog").style.display ="none";
+}
+
+function createNewFile() {
+    var text = document.getElementById("newdocname").value;
+
+    //Todo: check the uniqueness of the filename
+    if ( text != null && text != "") {
+
+        var json_upload = JSON.stringify( {documentname: text})
 
         var xhr = new XMLHttpRequest()
         xhr.open('post', '/addnewdoc')
         xhr.setRequestHeader('Content-Type', 'application/json')
         xhr.onreadystatechange = function() {
             if( xhr.readyState == 4 && xhr.status == 200) {
-                getFileList();
+
+                if( xhr.responseText == "OK")
+                {
+                    getFileList();
+                }
+                else
+                {
+                    alert("A file has the same name already exists or the name if an invalid name !");
+                }
+
             }
         }
         xhr.send(json_upload)
 
-
+        document.getElementById("dialogbg").style.display ="none";
+        document.getElementById("newdocdialog").style.display ="none";
     }
+}
+
+function deleteFile() {
+
+
+
+    var filelist = document.getElementById('filelist');
+
+    var sel = filelist.options[filelist.selectedIndex].value;
+
+    var json_upload = JSON.stringify( {documentname: sel} )
+    var xhr = new XMLHttpRequest();
+
+    xhr.open('post', '/deletedoc');
+
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.onreadystatechange = function() {
+        if ( xhr.readyState == 4 && xhr.status == 200) {
+            getFileList();
+        }
+    }
+    xhr.send(json_upload);
+
+
 }
 
 function getFileList() {
