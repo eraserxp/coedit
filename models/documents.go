@@ -118,6 +118,26 @@ func (doc *Documents) UpdatePrivacyInfo() error {
 }
 
 func (doc *Documents) CheckAccessible(useremail string) bool {
+	//check ownership of the document
+	var lists1 []orm.ParamsList
+	n1, _ := o.Raw("Select username from ownership where document_id = ?", doc.Id).ValuesList( &lists1)
+	if n1 == 1 {
+		email := lists1[0][0].(string)
+		if email == useremail {
+			return true
+		}
+	} 
+
+	//check the privacy option of the document
+	privacyOption := doc.CheckPrivacyInfo()
+
+	if privacyOption == "N"  { //no other user can access
+		return false;
+	} else if privacyOption == "E" {
+		return true;
+	}
+
+	//consider the case when privacyOption == "S" some users can access
 	var lists []orm.ParamsList
 	num, _ := o.Raw("Select access_emails from documents where id = ?", doc.Id).ValuesList( &lists)
 

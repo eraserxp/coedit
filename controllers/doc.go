@@ -18,6 +18,13 @@ func (c *DocController) Get() {
 
 	document_id := c.Ctx.Input.Param(":uuid")
 
+	//set document id as cookies
+	//cookie := http.Cookie{Name: "documentId", Value: document_id}
+	//http.SetCookie(c.Ctx.ResponseWriter, &cookie)
+
+	sess, _ := globalSessions.SessionStart( c.Ctx.ResponseWriter, c.Ctx.Request)
+
+	sess.Set("documentId", document_id);
 
 	//if the url doesn't contain uuid, then it means creating a new document
 	if (document_id == "") {
@@ -35,7 +42,7 @@ func (c *DocController) Get() {
 	privacyOption := docmodel.CheckPrivacyInfo()
 
 	if( privacyOption == "N" ) {
-		c.TplName="404.tpl"
+		c.TplName="noAccess.tpl"
 		return;
 	} else if ( privacyOption == "S") {
 		c.Redirect("/docreg/" + document_id, 302)
@@ -43,9 +50,12 @@ func (c *DocController) Get() {
 
 	//	c.Data["Website"] = "beego.me"
 	//	c.Data["Email"] = "astaxie@gmail.com"
+	sess.Set("previousDoc", "none")
+
 	c.TplName = "doc.tpl"
 }
 
+//controller for other users to access documents created by registered users
 type DocRegController struct {
 	beego.Controller
 }
@@ -60,14 +70,18 @@ func (c *DocRegController) Get() {
 		c.TplName = "404.tpl"
 
 	} else {
+		//set document id as cookies
+		//cookie := http.Cookie{Name: "documentId", Value: document_id}
+		//http.SetCookie(c.Ctx.ResponseWriter, &cookie)
 
 		sess, _ := globalSessions.SessionStart( c.Ctx.ResponseWriter, c.Ctx.Request)
 		username := sess.Get("username")
 
+		sess.Set("documentId", document_id);
 
 
 		if( username == nil || username == "") {
-			c.TplName = "404.tpl"
+			c.TplName = "noAccess.tpl"
 			fmt.Println( "Unregistered user attempting to load registered page." );
 			return;
 		}
@@ -82,8 +96,8 @@ func (c *DocRegController) Get() {
 		c.Data["Email"] =  username.(string)
 
 		if ( !canAccess ) {
-			c.TplName = "404.tpl"
 			fmt.Println(username.(string) + " can not access the page" )
+			c.TplName = "noAccess.tpl"
 			return;
 		} else {
 			fmt.Println(username.(string) + " can access the page" )
@@ -100,14 +114,17 @@ func (c *DocRegController) Get() {
 		c.Data["FileName"] =  filename
 
 
+		sess.Set("previousDoc", "none")
 
 		c.TplName = "regdoc.tpl"
 	}
 }
 
+// controller for an owner to access his own documents
 type RegDocController struct {
 	beego.Controller
 }
+
 
 func (c *RegDocController) Get() {
 	fmt.Println("RegDocController")
@@ -116,15 +133,23 @@ func (c *RegDocController) Get() {
 
 	if ( document_id == "") {
 
-		c.TplName = "404.tpl"
+		c.TplName = "noAccess.tpl"
 
 	} else {
+		//set document id as cookies
+		//cookie := http.Cookie{Name: "documentId", Value: document_id}
+		//http.SetCookie(c.Ctx.ResponseWriter, &cookie)
 
 		sess, _ := globalSessions.SessionStart( c.Ctx.ResponseWriter, c.Ctx.Request)
 		username := sess.Get("username")
 
+		sess.Set("previousDoc", document_id)
+
+		sess.Set("documentId", document_id);
+
 		if( username == nil || username == "") {
-			c.TplName = "404.tpl"
+			//c.TplName = "404.tpl"
+			c.TplName = "login.tpl"
 			fmt.Println( "Unregistered user attempting to load registered page." );
 			return;
 		}
@@ -140,6 +165,7 @@ func (c *RegDocController) Get() {
 		c.Data["FileName"] =  filename
 
 
+		sess.Set("previousDoc", "none")
 
 		c.TplName = "regdoc.tpl"
 	}

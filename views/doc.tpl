@@ -24,7 +24,7 @@
         COEDITOR
     </div>
     <div class="iconright">
-        <a class="btn btn-lg btn-social-icon btn-google">
+        <a href="/auth/gplus" class="btn btn-lg btn-social-icon btn-google">
             <span class="fa fa-google"></span>
         </a>
 
