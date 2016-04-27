@@ -126,8 +126,18 @@ func (doc *Documents) CheckAccessible(useremail string) bool {
 		if email == useremail {
 			return true
 		}
+	} 
+
+	//check the privacy option of the document
+	privacyOption := doc.CheckPrivacyInfo()
+
+	if privacyOption == "N"  { //no other user can access
+		return false;
+	} else if privacyOption == "E" {
+		return true;
 	}
 
+	//consider the case when privacyOption == "S" some users can access
 	var lists []orm.ParamsList
 	num, _ := o.Raw("Select access_emails from documents where id = ?", doc.Id).ValuesList( &lists)
 

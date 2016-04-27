@@ -42,7 +42,7 @@ func (c *DocController) Get() {
 	privacyOption := docmodel.CheckPrivacyInfo()
 
 	if( privacyOption == "N" ) {
-		c.TplName="404.tpl"
+		c.TplName="noAccess.tpl"
 		return;
 	} else if ( privacyOption == "S") {
 		c.Redirect("/docreg/" + document_id, 302)
@@ -81,7 +81,7 @@ func (c *DocRegController) Get() {
 
 
 		if( username == nil || username == "") {
-			c.TplName = "404.tpl"
+			c.TplName = "noAccess.tpl"
 			fmt.Println( "Unregistered user attempting to load registered page." );
 			return;
 		}
@@ -96,8 +96,8 @@ func (c *DocRegController) Get() {
 		c.Data["Email"] =  username.(string)
 
 		if ( !canAccess ) {
-			c.TplName = "404.tpl"
 			fmt.Println(username.(string) + " can not access the page" )
+			c.TplName = "noAccess.tpl"
 			return;
 		} else {
 			fmt.Println(username.(string) + " can access the page" )
@@ -133,7 +133,7 @@ func (c *RegDocController) Get() {
 
 	if ( document_id == "") {
 
-		c.TplName = "404.tpl"
+		c.TplName = "noAccess.tpl"
 
 	} else {
 		//set document id as cookies

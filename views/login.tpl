@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />
 </head>
 <body>
-<div>Please login to access the document</div>
+<div><h1>Please log in to access the document</h1></div>
 <div>
     <a href="/auth/gplus" class="btn btn-lg btn-social-icon btn-google">
         <span class="fa fa-google"></span>

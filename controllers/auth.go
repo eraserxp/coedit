@@ -221,6 +221,8 @@ func (a *AccountController) Get() {
 
 	//	c.Data["Website"] = "beego.me"
 	//	c.Data["Email"] = "astaxie@gmail.com"
+	sess.Set("previousDoc", "none")
+
 	a.TplName = "user.tpl"
 }
 

@@ -83,25 +83,37 @@ func (w *WebsocketProxy) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 	documentId := sess.Get("documentId").(string)
 	fmt.Println("Websocket proxy: document id: ", documentId)
 
-	//check if the document can be accessed by everyone
-	docmodel := &models.Documents{documentId, "", "E", ""};
-	privacyOption := docmodel.CheckPrivacyInfo()
-	fmt.Println("websocket proxy: privacy: " + privacyOption)
-
-	if( privacyOption == "N" ) { //No other users can access
-		return;
-	} else if ( privacyOption == "S") { //Some users can access
-		//if only certain users can access the document, retrieve the current user from
-		//the request and check if it is within the list
-		username := sess.Get("username")
-		doc := &models.Documents{documentId, "", "E", ""}
-
-		canAccess := doc.CheckAccessible( username.(string) )
-
-		if (!canAccess) {
-			return
-		}
+	username := sess.Get("username")
+	userEmail := ""
+	if (username != nil) {
+		userEmail = username.(string)
 	}
+	fmt.Println("websocket proxy: username: ", userEmail)
+
+	docmodel := &models.Documents{documentId, "", "E", ""};
+	if (!docmodel.CheckAccessible(userEmail)) {
+		return
+	}
+
+	//check if the document can be accessed by everyone
+	//docmodel := &models.Documents{documentId, "", "E", ""};
+	//privacyOption := docmodel.CheckPrivacyInfo()
+	//fmt.Println("websocket proxy: privacy: " + privacyOption)
+	//
+	//if( privacyOption == "N" ) { //No other user can access; only the owner can access
+	//	return;
+	//} else if ( privacyOption == "S") { //Some users can access
+	//	//if only certain users can access the document, retrieve the current user from
+	//	//the request and check if it is within the list
+	//	username := sess.Get("username")
+	//	doc := &models.Documents{documentId, "", "E", ""}
+	//
+	//	canAccess := doc.CheckAccessible( username.(string) )
+	//
+	//	if (!canAccess) {
+	//		return
+	//	}
+	//}
 
 
 	if w.Backend == nil {
