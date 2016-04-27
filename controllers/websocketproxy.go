@@ -92,6 +92,7 @@ func (w *WebsocketProxy) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 
 	docmodel := &models.Documents{documentId, "", "E", ""};
 	if (!docmodel.CheckAccessible(userEmail)) {
+		fmt.Println("can't access the websocket")
 		return
 	}
 

@@ -90,3 +90,22 @@ func (ownership *Ownership) SearchDocName() string {
 
 	return ""
 }
+
+func (ownership *Ownership) GetOwner() string {
+	var lists []orm.ParamsList
+
+	num, err := o.Raw(" select username from ownership where document_id = ?", ownership.DocumentId).ValuesList( &lists)
+
+	if err == nil {
+		if num == 1 {
+			return lists[0][0].(string)
+
+		} else {
+			fmt.Println("No result found or result number is not correct !")
+		}
+	} else {
+		fmt.Println( "Error on select ownership query! %v" , err)
+	}
+
+	return ""
+}

@@ -66,9 +66,7 @@ func (c *DocRegController) Get() {
 	document_id := c.Ctx.Input.Param(":uuid")
 
 	if ( document_id == "") {
-
 		c.TplName = "404.tpl"
-
 	} else {
 		//set document id as cookies
 		//cookie := http.Cookie{Name: "documentId", Value: document_id}
@@ -79,6 +77,15 @@ func (c *DocRegController) Get() {
 
 		sess.Set("documentId", document_id);
 
+		//check if the document can be accessed by everyone
+		docmodel := &models.Documents{document_id, "", "E", ""};
+		privacyOption := docmodel.CheckPrivacyInfo()
+		//use doc.tpl if user is not logged
+		if privacyOption == "E" && (username == nil || username == "") {
+			sess.Set("previousDoc", "none")
+			c.TplName = "doc.tpl"
+			return
+		}
 
 		if( username == nil || username == "") {
 			c.TplName = "noAccess.tpl"
@@ -116,7 +123,7 @@ func (c *DocRegController) Get() {
 
 		sess.Set("previousDoc", "none")
 
-		c.TplName = "regdoc.tpl"
+		c.TplName = "docreg.tpl"
 	}
 }
 
@@ -147,6 +154,15 @@ func (c *RegDocController) Get() {
 
 		sess.Set("documentId", document_id);
 
+		//check if the document can be accessed by everyone
+		docmodel := &models.Documents{document_id, "", "E", ""};
+		privacyOption := docmodel.CheckPrivacyInfo()
+		if privacyOption == "E" && (username == nil || username == "") {
+			sess.Set("previousDoc", "none")
+			c.TplName = "doc.tpl"
+			return
+		}
+
 		if( username == nil || username == "") {
 			//c.TplName = "404.tpl"
 			c.TplName = "login.tpl"
@@ -164,10 +180,16 @@ func (c *RegDocController) Get() {
 
 		c.Data["FileName"] =  filename
 
+		owner := ( &models.Ownership{1, "", "default", document_id} ).GetOwner()
 
 		sess.Set("previousDoc", "none")
 
-		c.TplName = "regdoc.tpl"
+		if owner != username {
+			c.TplName = "docreg.tpl" //no way to change the privacy option of a document
+		} else {
+			c.TplName = "regdoc.tpl" //can change the privacy option of a document
+		}
+
 	}
 }
 
