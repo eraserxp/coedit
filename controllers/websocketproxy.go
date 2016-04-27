@@ -11,6 +11,7 @@ import (
 
 	"github.com/gorilla/websocket"
 	"fmt"
+	"github.com/eraserxp/coedit/models"
 )
 
 var (
@@ -75,12 +76,32 @@ func (w *WebsocketProxy) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 	sess, _ := globalSessions.SessionStart(rw, req)
 	//fmt.Println("url when connecting to websocket: " + req.URL.Path)
 	//fmt.Println("websocket headers: ", req.Header)
-	documentId := sess.Get("documentId")
-	fmt.Println("document id: ", documentId)
-	//check if the document can be accessed by everyone
 
-	//if only certain users can access the document, retrieve the current user from
-	//the request and check if it is within the list
+	//read the document id from cookies
+	//cookie, _ := req.Cookie("documentId")
+	//documentId := cookie.Value
+	documentId := sess.Get("documentId").(string)
+	fmt.Println("Websocket proxy: document id: ", documentId)
+
+	//check if the document can be accessed by everyone
+	docmodel := &models.Documents{documentId, "", "E", ""};
+	privacyOption := docmodel.CheckPrivacyInfo()
+	fmt.Println("websocket proxy: privacy: " + privacyOption)
+
+	if( privacyOption == "N" ) { //No other users can access
+		return;
+	} else if ( privacyOption == "S") { //Some users can access
+		//if only certain users can access the document, retrieve the current user from
+		//the request and check if it is within the list
+		username := sess.Get("username")
+		doc := &models.Documents{documentId, "", "E", ""}
+
+		canAccess := doc.CheckAccessible( username.(string) )
+
+		if (!canAccess) {
+			return
+		}
+	}
 
 
 	if w.Backend == nil {

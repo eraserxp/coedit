@@ -138,6 +138,8 @@ func authCallback(res http.ResponseWriter, req *http.Request) {
 		fmt.Println("set error,", err)
 	}
 
+	//set the status of the user
+	sess.Set("logged", "true")
 	http.Redirect( res, req, "/user/" + user.Email, http.StatusFound)
 	//t.Execute(res, user)
 }
@@ -181,11 +183,32 @@ func isLogin(this *AccountController) bool {
 	return username == user
 }
 
+//check if the current user is a registered user by retrieving session values
+func IsLogged(w http.ResponseWriter, r *http.Request) bool {
+	sess, err := globalSessions.SessionStart(w, r)
+	if (err != nil) {
+		return false
+	}
+	logged := sess.Get("logged").(string)
+
+	return logged == "true"
+}
+
+
 func (a *AccountController) Get() {
 	//if not logged in, redirect to the main page
 	if (!isLogin(a)) {
 		a.Redirect("/", 302)
 	}
+
+	//if the previous page request asks for a document, redirect to it after login
+	sess, _ := globalSessions.SessionStart(a.Ctx.ResponseWriter, a.Ctx.Request)
+	previousDoc := sess.Get("previousDoc")
+	if (previousDoc != nil && previousDoc.(string) != "none") {
+		fmt.Println("redirect to /doc/" + previousDoc.(string))
+		a.Redirect("/doc/" + previousDoc.(string), 302)
+	}
+
 
 	user_email := a.Ctx.Input.Param(":uemail")
 
