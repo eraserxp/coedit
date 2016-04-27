@@ -154,9 +154,16 @@ func (c *RegDocController) Get() {
 
 		sess.Set("documentId", document_id);
 
-		//check if the document can be accessed by everyone
+		//check if privacy option of the document
 		docmodel := &models.Documents{document_id, "", "E", ""};
 		privacyOption := docmodel.CheckPrivacyInfo()
+
+		if privacyOption == "N" { //no other users can access
+			c.TplName = "noAccess.tpl"
+			return
+		}
+
+		//everyone can access and the current user is not logged in
 		if privacyOption == "E" && (username == nil || username == "") {
 			sess.Set("previousDoc", "none")
 			c.TplName = "doc.tpl"
