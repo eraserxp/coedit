@@ -90,7 +90,7 @@
 
 <script>
 
-    var socket = io('http://eraserxp.com:8110').connect();
+    var socket = io('eraserxp.com:8110').connect();
     var roomUrl = window.location.href;
     socket.emit('join',{
         username: $('#nametext').val(),
