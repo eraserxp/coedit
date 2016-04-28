@@ -60,10 +60,12 @@
         <textarea class="nametext">Ace</textarea>
         <br/><br/>
         Message log:<br/>
-        <textarea class="logtext" readonly>Ace: sometext</textarea>
+        <textarea id="logtext" readonly></textarea>
         <br/><br/>
         Send message: <br/>
-        <textarea class="sendtext"></textarea>
+        <form action ="" >
+            <input id="sendtext" autocomplete="off" /><button>Send</button>
+        </form>
     </div>
 
     <script src="http://d1n0x3qji82z53.cloudfront.net/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
