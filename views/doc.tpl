@@ -71,18 +71,68 @@
     </div>
     <div class="chatter">
         Your name:<br/>
-        <textarea class="nametext">Ace</textarea>
+        <textarea id="nametext">Anon</textarea>
         <br/><br/>
         Message log:<br/>
-        <textarea class="logtext" readonly>Ace: sometext</textarea>
+        <textarea id="messages" rows="15" cols="15"></textarea>
         <br/><br/>
         Send message: <br/>
-        <textarea class="sendtext"></textarea>
+        <form action="">
+            <input id="sendtext" autocomplete="off" /><button>Send</button>
+        </form>
     </div>
-
+</div>
 <script src="../static/ace/ace.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript" src="../static/js/leaps.js"></script>
 <script type="text/javascript" src="../static/js/leapexample.js"></script>
+<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+<script src="http://code.jquery.com/jquery-1.11.1.js"></script>
 
+<script>
+
+    var socket = io('192.168.0.11:8110').connect();
+    var roomUrl = window.location.href;
+    socket.emit('join',{
+        username: $('#nametext').val(),
+        roomUrl: roomUrl
+    });
+
+    socket.on('broadcast_join', function(data){
+        console.log(data.username + " join");
+        $('#messages').append("One user join \n");
+    });
+
+    socket.on('broadcast_quit', function(data){
+        console.log(data.username + " leave");
+        $('#messages').append(data.username + " left \n");
+    });
+
+    $('form').submit(function(){
+        var username = $('#nametext').val();
+        var message = $('#sendtext').val();
+
+        socket.emit('say', {
+            username: username,
+            text : message,
+            roomUrl : roomUrl
+        });
+
+        $('#sendtext').val('');
+        return false;
+    });
+
+    socket.on('broadcast_say', function(msg){
+        console.log("someone says");
+        var dt = new Date();
+        var time = dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
+        $('#messages').append(msg.username + ": " + msg.text + "\n");
+    });
+
+
+
+    $(document).ready(function(){
+        $('#messages').scrollBottom($('#messages')[0].scrollHeight);
+    });
+</script>
 </body>
 </html>
